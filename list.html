@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>曲の一覧（プレイリスト作成用）</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Sans", sans-serif; margin: 0; padding: 20px; color: #222; background: #fafaf8; }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  p { font-size: 14px; line-height: 1.6; color: #555; }
+  button { width: 100%; padding: 16px; font-size: 17px; font-weight: bold; color: #fff; background: #3d6b5c; border: 0; border-radius: 12px; }
+  a.btn { display: block; text-align: center; margin-top: 12px; padding: 14px; font-size: 16px; color: #3d6b5c; border: 1.5px solid #3d6b5c; border-radius: 12px; text-decoration: none; }
+  textarea { width: 100%; height: 50vh; margin-top: 16px; font-size: 13px; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+  #msg { text-align: center; font-size: 14px; color: #3d6b5c; height: 1.5em; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>曲の一覧（38曲）</h1>
+<p>①「一覧をコピー」→ ② TuneMyMusic で「テキスト」を選んで貼り付け → ③ 送り先に Spotify（2回目は Apple Music）を選んでログイン → 転送</p>
+<button id="copy">一覧をコピー</button>
+<div id="msg"></div>
+<a class="btn" href="https://www.tunemymusic.com/ja" target="_blank" rel="noopener">TuneMyMusic を開く</a>
+<textarea id="list" readonly></textarea>
+<script>
+  fetch("songs.json").then(r => r.json()).then(d => {
+    const lines = [];
+    d.sections.forEach(sec => sec.scenes.forEach(sc => sc.songs.forEach(s => lines.push(s.artist + " - " + s.title))));
+    document.getElementById("list").value = lines.join("\n");
+  });
+  document.getElementById("copy").addEventListener("click", async () => {
+    const ta = document.getElementById("list");
+    try { await navigator.clipboard.writeText(ta.value); }
+    catch (e) { ta.select(); document.execCommand("copy"); }
+    document.getElementById("msg").textContent = "コピーしました";
+  });
+</script>
+</body>
+</html>
