@@ -1,0 +1,1257 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#3f665c">
+  <title>指輪交換〜署名の候補</title>
+  <style>
+    :root {
+      --accent: #3f665c;
+      --accent-deep: #2e4e46;
+      --accent-soft: #edf4f1;
+      --ink: #202624;
+      --muted: #66706d;
+      --line: #dfe5e2;
+      --surface: #ffffff;
+      --canvas: #f7f8f7;
+      --shadow: 0 8px 24px rgb(35 53 47 / 10%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.has-dock main { padding-bottom: calc(220px + env(safe-area-inset-bottom)); }
+    body.has-spotify-dock main { padding-bottom: calc(300px + env(safe-area-inset-bottom)); }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+
+    .page-header {
+      padding: 42px 20px 34px;
+      color: white;
+      background: var(--accent);
+    }
+
+    .header-inner, main {
+      width: min(100%, 860px);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      opacity: .82;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 9vw, 3.5rem);
+      font-weight: 500;
+      letter-spacing: -.025em;
+      line-height: 1.08;
+    }
+
+    main { padding: 28px 16px 64px; }
+
+    .intro h2 {
+      margin: 0;
+      font-size: 1.55rem;
+      letter-spacing: .02em;
+    }
+
+    .summary {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin: 22px 0 12px;
+    }
+
+    .primary-action {
+      min-height: 52px;
+      padding: 12px 17px;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      color: white;
+      background: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary-action.secondary {
+      color: var(--accent-deep);
+      background: white;
+    }
+
+    .primary-action.is-selected {
+      outline: 3px solid #b9cec6;
+      outline-offset: 2px;
+    }
+
+    .primary-action:disabled { cursor: wait; opacity: .55; }
+    .primary-action:not(:disabled):active { transform: translateY(1px); }
+
+    .listening-note, .spotify-note, .action-help, .comments-status {
+      margin: 8px 2px 0;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.55;
+    }
+
+    .action-group { min-width: 0; }
+    .action-group .primary-action { width: 100%; }
+    .action-help { margin-top: 5px; }
+
+    .playlist-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .playlist-links[hidden] { display: none; }
+    .playlist-label { width: 100%; margin: 0; color: var(--muted); font-size: .78rem; font-weight: 700; }
+    .playlist-link { min-height: 42px; padding: 8px 14px; }
+
+    .spotify-panel {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      bottom: max(8px, env(safe-area-inset-bottom));
+      width: min(calc(100% - 24px), 860px);
+      margin: 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      transform: translateX(-50%);
+    }
+
+    .spotify-panel[hidden] { display: none; }
+
+    .spotify-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .spotify-panel-title { margin: 0; font-size: .88rem; font-weight: 700; }
+    .spotify-current { margin: 0; color: var(--muted); font-size: .78rem; }
+    #spotify-embed { min-height: 152px; overflow: hidden; border-radius: 10px; }
+
+    .loading, .fatal-error {
+      margin: 40px 0;
+      padding: 20px;
+      border-radius: 10px;
+      background: white;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .part { margin-top: 46px; }
+
+    .part-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 20px;
+      color: var(--accent-deep);
+      font-size: 1.35rem;
+      letter-spacing: .08em;
+    }
+
+    .part-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    .scene {
+      margin: 0 0 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .scene-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 7px 12px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfb;
+    }
+
+    .scene-kicker {
+      margin: 0 0 2px;
+      color: var(--accent);
+      font-size: .76rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .scene-name { margin: 0; font-size: 1.05rem; line-height: 1.4; }
+    .scene-meta { margin: 2px 0 0; color: var(--muted); font-size: .78rem; }
+    .scene-memo { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .84rem; }
+
+    .scene-play {
+      align-self: center;
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent-deep);
+      background: white;
+      font-size: .78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .song-list { margin: 0; padding: 0; list-style: none; }
+    .song-item { border-bottom: 1px solid var(--line); }
+    .song-item:last-child { border-bottom: 0; }
+
+    .song-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 0 10px;
+      padding: 14px 14px 13px;
+      transition: background-color .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+      scroll-margin: 180px;
+    }
+
+    .song-row:active { background: #f7faf8; }
+
+    .song-row.is-current {
+      background: var(--accent-soft);
+      box-shadow: inset 4px 0 0 var(--accent);
+    }
+
+    .song-number {
+      grid-row: 1 / span 2;
+      padding-top: 1px;
+      color: var(--muted);
+      font-size: .8rem;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .song-copy { min-width: 0; }
+
+    .title-line { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 7px; }
+    .song-title { font-size: .96rem; font-weight: 700; line-height: 1.4; }
+    .song-artist { margin: 2px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.4; }
+    .song-length { margin-left: 7px; color: var(--muted); font-size: .75rem; font-weight: 500; white-space: nowrap; }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 999px;
+      color: var(--accent-deep);
+      background: #dfece7;
+      font-size: .67rem;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .song-actions {
+      grid-column: 2;
+      display: grid;
+      grid-template-columns: 42px repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 11px;
+    }
+    .song-actions:not(.has-comment-button) { grid-template-columns: 42px 1fr 1fr; }
+    .song-actions.has-comment-button { grid-template-columns: 42px minmax(0, 1fr) minmax(0, 1fr); }
+    .song-actions.has-comment-button .comment-button { grid-column: 1 / -1; }
+
+    .row-play, .service-link, .comment-button {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font-size: .74rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .row-play { color: var(--accent-deep); cursor: pointer; }
+    .comment-button { gap: 4px; padding: 5px; cursor: pointer; }
+    .service-link, .comment-button { white-space: nowrap; }
+    .comment-count {
+      min-width: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      color: white;
+      background: var(--accent);
+      font-size: .66rem;
+      line-height: 1.7;
+    }
+    .service-link:active, .row-play:active, .scene-play:active, .comment-button:active { background: #f1f5f3; }
+
+    .comment-drawer {
+      padding: 14px 16px 16px 58px;
+      border-top: 1px solid var(--line);
+      background: #fbfcfb;
+    }
+
+    .comment-drawer[hidden], .comment-form[hidden], .comment-list[hidden] { display: none; }
+    .comment-list { display: grid; gap: 9px; margin-bottom: 13px; }
+    .comment-entry { padding-left: 10px; border-left: 3px solid #c9d9d3; }
+    .comment-entry-meta { margin: 0 0 2px; color: var(--muted); font-size: .7rem; }
+    .comment-entry-text { margin: 0; font-size: .82rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+    .comment-form { display: grid; gap: 9px; }
+    .comment-form label { color: var(--muted); font-size: .74rem; font-weight: 700; }
+    .comment-input, .comment-textarea {
+      width: 100%;
+      margin-top: 3px;
+      padding: 10px 11px;
+      border: 1px solid #cbd5d1;
+      border-radius: 8px;
+      color: var(--ink);
+      background: white;
+      font: inherit;
+      font-size: .86rem;
+    }
+    .comment-textarea { min-height: 88px; resize: vertical; }
+    .comment-submit { justify-self: start; min-height: 42px; padding: 8px 18px; border: 0; border-radius: 8px; color: white; background: var(--accent); font-weight: 700; cursor: pointer; }
+    .comment-submit:disabled { opacity: .55; cursor: wait; }
+    .comment-feedback { min-height: 1.3em; margin: 0; color: var(--muted); font-size: .74rem; }
+    .comment-feedback.is-error { color: #9b3b36; }
+
+    .general-comments {
+      margin-top: 48px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+    }
+    .general-comments[hidden] { display: none; }
+    .general-comments h2 { margin: 0 0 12px; font-size: 1.25rem; }
+    .general-comments .comment-drawer { padding: 0; border: 0; background: transparent; }
+
+    .player-dock {
+      position: fixed;
+      z-index: 20;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 11px max(14px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      border-top: 1px solid #cfdbd6;
+      background: rgb(255 255 255 / 96%);
+      box-shadow: 0 -8px 26px rgb(35 53 47 / 13%);
+      backdrop-filter: blur(10px);
+    }
+
+    .player-dock[hidden] { display: none; }
+
+    .player-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 7px 12px;
+      width: min(100%, 860px);
+      margin: 0 auto;
+    }
+
+    .now-scene {
+      margin: 0;
+      overflow: hidden;
+      color: var(--accent);
+      font-size: .7rem;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .now-mode { margin: 0 0 1px; color: var(--accent); font-size: .67rem; font-weight: 800; }
+
+    .now-title {
+      margin: 0;
+      overflow: hidden;
+      font-size: .86rem;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .now-artist {
+      margin: 0;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: .72rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .player-controls {
+      grid-row: 1 / span 2;
+      grid-column: 2;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .control-button {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .control-button.main { color: white; background: var(--accent); font-size: .95rem; }
+
+    .progress-wrap {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .progress-track { height: 4px; overflow: hidden; border-radius: 999px; background: #dfe5e2; }
+    .progress-fill { width: 0; height: 100%; background: var(--accent); transition: width .15s linear; }
+    .progress-time { color: var(--muted); font-size: .65rem; font-variant-numeric: tabular-nums; }
+
+    .toast {
+      position: fixed;
+      z-index: 30;
+      right: 16px;
+      bottom: calc(150px + env(safe-area-inset-bottom));
+      left: 16px;
+      width: fit-content;
+      max-width: min(92vw, 520px);
+      margin: auto;
+      padding: 9px 13px;
+      border-radius: 8px;
+      color: white;
+      background: #293632;
+      font-size: .78rem;
+      box-shadow: var(--shadow);
+    }
+
+    .toast[hidden] { display: none; }
+    body.has-spotify-dock .toast { bottom: calc(232px + env(safe-area-inset-bottom)); }
+
+    @media (min-width: 620px) {
+      .actions { grid-template-columns: repeat(3, 1fr); align-items: start; }
+      .song-row { grid-template-columns: 40px minmax(0, 1fr) 380px; align-items: center; padding: 15px 18px; }
+      .song-number { grid-row: auto; }
+      .song-actions { grid-column: 3; grid-row: 1; margin-top: 0; }
+      .song-actions.has-comment-button { grid-template-columns: 42px repeat(3, minmax(0, 1fr)); }
+      .song-actions.has-comment-button .comment-button { grid-column: auto; }
+      .page-header { padding-top: 62px; padding-bottom: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .song-row, .progress-fill { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-inner">
+      <p class="eyebrow">Music selection</p>
+      <h1>指輪交換〜署名の候補</h1>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="list-title">
+      <h2 id="list-title">曲目リスト</h2>
+      <p class="summary" id="summary">読み込み中…</p>
+      <div class="actions">
+        <div class="action-group">
+          <button class="primary-action is-selected" id="chorus-preview-all" type="button" disabled>▶ サビ付近を試聴（各30秒）</button>
+          <p class="action-help">Apple Musicの試聴区間（多くはサビ付近）を順に流します。</p>
+        </div>
+        <div class="action-group">
+          <button class="primary-action secondary" id="spotify-preview-all" type="button" disabled>Spotifyを準備中…</button>
+          <p class="action-help">Spotifyにログイン中は各曲を頭から30秒。未ログイン時はSpotify側の試聴区間になります。</p>
+        </div>
+        <div class="action-group">
+          <button class="primary-action secondary" id="spotify-full-all" type="button" disabled>Spotifyを準備中…</button>
+          <p class="action-help">Spotifyにログイン中なら、各曲を1曲まるごと順に再生します。</p>
+        </div>
+      </div>
+      <p class="spotify-note">スマホではSpotifyの曲送りが自動で進まないことがあります。</p>
+      <div class="playlist-links" id="playlist-links" hidden></div>
+      <p class="comments-status" id="comments-status">コメント欄は準備中</p>
+    </section>
+
+    <aside class="spotify-panel" id="spotify-panel" aria-label="Spotifyプレーヤー" hidden>
+      <div class="spotify-panel-head">
+        <p class="spotify-panel-title" id="spotify-panel-title">Spotifyで連続再生中</p>
+        <p class="spotify-current" id="spotify-current"></p>
+      </div>
+      <div id="spotify-embed"></div>
+    </aside>
+
+    <div id="content"><p class="loading">曲目を読み込んでいます</p></div>
+
+    <section class="general-comments" id="general-comments" aria-labelledby="general-comments-title" hidden>
+      <h2 id="general-comments-title">全体へのコメント</h2>
+      <div id="general-comments-area"></div>
+    </section>
+  </main>
+
+  <audio id="preview-audio" preload="metadata" playsinline></audio>
+
+  <div class="player-dock" id="player-dock" role="region" aria-label="試聴プレーヤー" hidden>
+    <div class="player-inner">
+      <div class="now-playing">
+        <p class="now-mode" id="now-mode">サビ付近を試聴</p>
+        <p class="now-scene" id="now-scene"></p>
+        <p class="now-title" id="now-title"></p>
+        <p class="now-artist" id="now-artist"></p>
+      </div>
+      <div class="player-controls">
+        <button class="control-button" id="previous" type="button" aria-label="前の曲">◀</button>
+        <button class="control-button main" id="play-pause" type="button" aria-label="一時停止">❚❚</button>
+        <button class="control-button" id="next" type="button" aria-label="次の曲">▶</button>
+      </div>
+      <div class="progress-wrap" aria-label="試聴の進み具合">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-time" id="progress-time">0:00 / 0:30</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script>
+    const COMMENTS_API = "";
+    const PLAYLIST_SPOTIFY = "";
+    const PLAYLIST_APPLE = "";
+
+    (() => {
+      "use strict";
+
+      const audio = document.getElementById("preview-audio");
+      const content = document.getElementById("content");
+      const summary = document.getElementById("summary");
+      const chorusPreviewAll = document.getElementById("chorus-preview-all");
+      const spotifyPreviewAll = document.getElementById("spotify-preview-all");
+      const spotifyFullAll = document.getElementById("spotify-full-all");
+      const spotifyPanel = document.getElementById("spotify-panel");
+      const spotifyPanelTitle = document.getElementById("spotify-panel-title");
+      const spotifyCurrent = document.getElementById("spotify-current");
+      const dock = document.getElementById("player-dock");
+      const nowMode = document.getElementById("now-mode");
+      const nowScene = document.getElementById("now-scene");
+      const nowTitle = document.getElementById("now-title");
+      const nowArtist = document.getElementById("now-artist");
+      const previousButton = document.getElementById("previous");
+      const playPauseButton = document.getElementById("play-pause");
+      const nextButton = document.getElementById("next");
+      const progressFill = document.getElementById("progress-fill");
+      const progressTime = document.getElementById("progress-time");
+      const toast = document.getElementById("toast");
+      const playlistLinks = document.getElementById("playlist-links");
+      const commentsStatus = document.getElementById("comments-status");
+      const generalComments = document.getElementById("general-comments");
+      const generalCommentsArea = document.getElementById("general-comments-area");
+
+      let songs = [];
+      let currentIndex = -1;
+      let mode = null;
+      let selectedMode = "apple-preview";
+      let loadSerial = 0;
+      let skipTimer = null;
+      let toastTimer = null;
+      let spotifyApi = null;
+      let spotifyController = null;
+      let spotifyIndex = -1;
+      let spotifyAdvancing = false;
+      let spotifyEndLatched = false;
+      let spotifyPendingPlay = null;
+      let comments = [];
+      const commentViews = new Map();
+      const commentNameInputs = [];
+
+      const MODE_LABELS = {
+        "apple-preview": "サビ付近を試聴（Apple Music）",
+        "spotify-preview": "頭から試聴（Spotify・各30秒）",
+        "spotify-full": "Spotifyで1曲まるごと通して聴く"
+      };
+
+      const el = (tag, className, text) => {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      };
+
+      const formatTrackTime = (seconds) => {
+        const safe = Math.max(0, Math.floor(Number(seconds) || 0));
+        return `${Math.floor(safe / 60)}:${String(safe % 60).padStart(2, "0")}`;
+      };
+
+      const formatTotal = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const rest = minutes % 60;
+        return hours ? `${hours}時間${rest}分` : `${minutes}分`;
+      };
+
+      const formatSceneTotal = (seconds) => {
+        const safe = Math.max(0, Math.floor(Number(seconds) || 0));
+        const minutes = Math.floor(safe / 60);
+        const rest = safe % 60;
+        return `${minutes}分${String(rest).padStart(2, "0")}秒`;
+      };
+
+      const showToast = (message) => {
+        clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.hidden = false;
+        toastTimer = setTimeout(() => { toast.hidden = true; }, 2800);
+      };
+
+      const isSpotifyMode = (value) => value === "spotify-preview" || value === "spotify-full";
+
+      const setSelectedMode = (nextMode) => {
+        selectedMode = nextMode;
+        const buttons = {
+          "apple-preview": chorusPreviewAll,
+          "spotify-preview": spotifyPreviewAll,
+          "spotify-full": spotifyFullAll
+        };
+        Object.entries(buttons).forEach(([buttonMode, button]) => {
+          button.classList.toggle("is-selected", buttonMode === nextMode);
+        });
+      };
+
+      const startSelectedAt = (index) => {
+        if (selectedMode === "apple-preview") playAppleAt(index);
+        else startSpotifyAt(index, selectedMode);
+      };
+
+      const updateRows = (index) => {
+        document.querySelectorAll(".song-row").forEach((row) => {
+          const active = Number(row.dataset.index) === index;
+          row.classList.toggle("is-current", active);
+          row.setAttribute("aria-current", active ? "true" : "false");
+          const button = row.querySelector(".row-play");
+          if (button) {
+            const playingHere = active && mode === "apple-preview" && !audio.paused;
+            button.textContent = playingHere ? "❚❚" : "▶";
+            button.setAttribute("aria-label", playingHere ? "一時停止" : `${songs[Number(row.dataset.index)]?.title || "この曲"}から試聴`);
+          }
+        });
+        const activeRow = document.querySelector(`.song-row[data-index="${index}"]`);
+        if (activeRow) {
+          activeRow.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      };
+
+      const setMediaMetadata = (song) => {
+        if (!("mediaSession" in navigator) || !("MediaMetadata" in window)) return;
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: song.title,
+          artist: song.artist,
+          album: `${song.part} / ${song.sceneName}`
+        });
+      };
+
+      const updateMediaPlaybackState = () => {
+        if (!("mediaSession" in navigator)) return;
+        try {
+          navigator.mediaSession.playbackState = audio.paused ? "paused" : "playing";
+        } catch (_) {}
+      };
+
+      const stopSpotify = () => {
+        if (isSpotifyMode(mode) && spotifyController) {
+          try { spotifyController.pause(); } catch (_) {}
+        }
+        spotifyPanel.hidden = true;
+        document.body.classList.remove("has-spotify-dock");
+        spotifyAdvancing = false;
+        spotifyEndLatched = false;
+        spotifyPendingPlay = null;
+        spotifyIndex = -1;
+      };
+
+      const stopApple = () => {
+        clearTimeout(skipTimer);
+        ++loadSerial;
+        audio.pause();
+        audio.removeAttribute("src");
+        audio.load();
+        currentIndex = -1;
+        dock.hidden = true;
+        document.body.classList.remove("has-dock");
+        if ("mediaSession" in navigator) {
+          try {
+            navigator.mediaSession.metadata = null;
+            navigator.mediaSession.playbackState = "none";
+          } catch (_) {}
+        }
+      };
+
+      const updateApplePlayer = () => {
+        const song = songs[currentIndex];
+        if (!song) return;
+        nowMode.textContent = MODE_LABELS["apple-preview"];
+        nowScene.textContent = `${song.part} / ${song.sceneName}`;
+        nowTitle.textContent = song.title;
+        nowArtist.textContent = song.artist;
+        const duration = Number.isFinite(audio.duration) && audio.duration > 0 ? Math.min(audio.duration, 30) : 30;
+        const position = Math.min(audio.currentTime || 0, duration);
+        progressFill.style.width = `${Math.min(100, (position / duration) * 100)}%`;
+        progressTime.textContent = `${formatTrackTime(position)} / ${formatTrackTime(duration)}`;
+        const isPlaying = !audio.paused;
+        playPauseButton.textContent = isPlaying ? "❚❚" : "▶";
+        playPauseButton.setAttribute("aria-label", isPlaying ? "一時停止" : "再生");
+        previousButton.disabled = currentIndex <= 0;
+        nextButton.disabled = currentIndex >= songs.length - 1;
+        updateMediaPlaybackState();
+      };
+
+      const playAppleAt = (index, announceError = true) => {
+        if (index < 0 || index >= songs.length) {
+          audio.pause();
+          updateApplePlayer();
+          showToast("すべての試聴が終わりました");
+          return;
+        }
+        clearTimeout(skipTimer);
+        const serial = ++loadSerial;
+        stopSpotify();
+        mode = "apple-preview";
+        setSelectedMode("apple-preview");
+        currentIndex = index;
+        const song = songs[index];
+        dock.hidden = false;
+        document.body.classList.add("has-dock");
+        audio.src = song.preview;
+        audio.load();
+        progressFill.style.width = "0%";
+        progressTime.textContent = "0:00 / 0:30";
+        updateRows(index);
+        updateApplePlayer();
+        setMediaMetadata(song);
+        const promise = audio.play();
+        if (promise && typeof promise.catch === "function") {
+          promise.catch(() => {
+            if (serial !== loadSerial || mode !== "apple-preview") return;
+            if (announceError) showToast("再生できませんでした。もう一度再生を押してください");
+            updateApplePlayer();
+          });
+        }
+      };
+
+      const skipBrokenPreview = () => {
+        if (mode !== "apple-preview") return;
+        clearTimeout(skipTimer);
+        showToast(`「${songs[currentIndex]?.title || "この曲"}」を読み込めないため次へ進みます`);
+        skipTimer = setTimeout(() => playAppleAt(currentIndex + 1, false), 650);
+      };
+
+      const startSpotifyAt = (index, playMode = selectedMode) => {
+        if (!spotifyController || !songs[index]) {
+          showToast("Spotifyプレーヤーを準備中です。少し待ってもう一度お試しください");
+          return;
+        }
+        if (!isSpotifyMode(playMode)) return;
+        mode = playMode;
+        setSelectedMode(playMode);
+        stopApple();
+        spotifyIndex = index;
+        spotifyAdvancing = false;
+        spotifyEndLatched = false;
+        spotifyPendingPlay = { index };
+        const song = songs[index];
+        spotifyPanel.hidden = false;
+        document.body.classList.add("has-spotify-dock");
+        spotifyPanelTitle.textContent = MODE_LABELS[playMode];
+        spotifyCurrent.textContent = `${index + 1}. ${song.title}（読み込み中）`;
+        updateRows(index);
+        try {
+          spotifyController.loadUri(`spotify:track:${song.spotifyId}`);
+        } catch (_) {
+          spotifyPendingPlay = null;
+          showToast("Spotifyで再生できませんでした");
+        }
+      };
+
+      const advanceSpotify = () => {
+        if (!isSpotifyMode(mode) || spotifyAdvancing) return;
+        if (spotifyIndex >= songs.length - 1) {
+          spotifyCurrent.textContent = "全曲の再生が終わりました";
+          return;
+        }
+        spotifyAdvancing = true;
+        const nextIndex = spotifyIndex + 1;
+        const playMode = mode;
+        setTimeout(() => {
+          if (mode === playMode) startSpotifyAt(nextIndex, playMode);
+        }, 180);
+      };
+
+      const createServiceLink = (label, href) => {
+        const link = el("a", "service-link", label);
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.setAttribute("aria-label", `${label}で開く`);
+        return link;
+      };
+
+      const setupPlaylistLinks = () => {
+        const links = [
+          ["Spotify", PLAYLIST_SPOTIFY],
+          ["Apple Music", PLAYLIST_APPLE]
+        ].filter(([, href]) => href);
+        if (!links.length) return;
+        playlistLinks.textContent = "";
+        playlistLinks.append(el("p", "playlist-label", "プレイリストで聴く"));
+        links.forEach(([label, href]) => {
+          const link = createServiceLink(label, href);
+          link.classList.add("playlist-link");
+          playlistLinks.append(link);
+        });
+        playlistLinks.hidden = false;
+      };
+
+      const getSavedCommentName = () => {
+        try { return localStorage.getItem("weddingBgmCommentName") || ""; }
+        catch (_) { return ""; }
+      };
+
+      const rememberCommentName = (name, sourceInput) => {
+        try { localStorage.setItem("weddingBgmCommentName", name); } catch (_) {}
+        commentNameInputs.forEach((input) => {
+          if (input !== sourceInput) input.value = name;
+        });
+      };
+
+      const formatCommentTime = (value) => {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value || "");
+        return date.toLocaleString("ja-JP", {
+          year: "numeric", month: "numeric", day: "numeric",
+          hour: "2-digit", minute: "2-digit"
+        });
+      };
+
+      const updateCommentView = (songId) => {
+        const view = commentViews.get(songId);
+        if (!view) return;
+        const entries = comments
+          .filter((comment) => String(comment.songId) === songId)
+          .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+
+        view.list.textContent = "";
+        entries.forEach((comment) => {
+          const entry = el("article", "comment-entry");
+          const author = String(comment.name || "").trim() || "匿名";
+          entry.append(
+            el("p", "comment-entry-meta", `${author} ・ ${formatCommentTime(comment.time)}`),
+            el("p", "comment-entry-text", String(comment.text || ""))
+          );
+          view.list.append(entry);
+        });
+        view.list.hidden = entries.length === 0;
+
+        if (view.button) {
+          view.button.textContent = "";
+          view.button.append(document.createTextNode("コメント"));
+          if (entries.length) view.button.append(el("span", "comment-count", String(entries.length)));
+        }
+        view.form.hidden = !view.alwaysOpen && !view.open;
+        view.drawer.hidden = !view.alwaysOpen && !view.open && entries.length === 0;
+      };
+
+      const updateAllCommentViews = () => {
+        commentViews.forEach((_, songId) => updateCommentView(songId));
+      };
+
+      const loadComments = async (showLoading = true) => {
+        if (!COMMENTS_API) return;
+        if (showLoading) {
+          commentsStatus.hidden = false;
+          commentsStatus.textContent = "コメントを読み込んでいます…";
+        }
+        try {
+          const separator = COMMENTS_API.includes("?") ? "&" : "?";
+          const response = await fetch(`${COMMENTS_API}${separator}action=list`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const result = await response.json();
+          if (!Array.isArray(result)) throw new Error("Invalid response");
+          comments = result;
+          updateAllCommentViews();
+          commentsStatus.hidden = true;
+        } catch (_) {
+          commentsStatus.hidden = false;
+          commentsStatus.textContent = "コメントを読み込めませんでした。時間をおいて再読み込みしてください。";
+        }
+      };
+
+      const submitComment = async (view) => {
+        const text = view.textarea.value.trim();
+        const name = view.nameInput.value.trim();
+        view.feedback.classList.remove("is-error");
+        if (!text) {
+          view.feedback.textContent = "コメント本文を入力してください。";
+          view.feedback.classList.add("is-error");
+          view.textarea.focus();
+          return;
+        }
+
+        rememberCommentName(name, view.nameInput);
+        view.submit.disabled = true;
+        view.feedback.textContent = "送信中…";
+        try {
+          const response = await fetch(COMMENTS_API, {
+            method: "POST",
+            body: JSON.stringify({
+              songId: view.songId,
+              title: view.title,
+              name,
+              text: text.slice(0, 500)
+            })
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const result = await response.json();
+          if (!result || result.ok !== true) throw new Error(result?.error || "Post failed");
+          view.textarea.value = "";
+          view.feedback.textContent = "送信しました。";
+          await loadComments(false);
+        } catch (_) {
+          view.feedback.textContent = "送信できませんでした。通信状態を確認してもう一度お試しください。";
+          view.feedback.classList.add("is-error");
+        } finally {
+          view.submit.disabled = false;
+        }
+      };
+
+      const createCommentArea = (songId, title, button = null, alwaysOpen = false) => {
+        const drawer = el("div", "comment-drawer");
+        const list = el("div", "comment-list");
+        const form = el("form", "comment-form");
+        form.noValidate = true;
+
+        const nameLabel = el("label", "", "名前（任意）");
+        const nameInput = el("input", "comment-input");
+        nameInput.type = "text";
+        nameInput.maxLength = 80;
+        nameInput.autocomplete = "name";
+        nameInput.value = getSavedCommentName();
+        nameInput.addEventListener("change", () => rememberCommentName(nameInput.value.trim(), nameInput));
+        nameLabel.append(nameInput);
+        commentNameInputs.push(nameInput);
+
+        const textLabel = el("label", "", "コメント（必須・500字まで）");
+        const textarea = el("textarea", "comment-textarea");
+        textarea.required = true;
+        textarea.maxLength = 500;
+        textarea.placeholder = "この曲は〇〇に変えたい、など";
+        textLabel.append(textarea);
+
+        const submit = el("button", "comment-submit", "送信");
+        submit.type = "submit";
+        const feedback = el("p", "comment-feedback");
+        form.append(nameLabel, textLabel, submit, feedback);
+        drawer.append(list, form);
+
+        const view = {
+          songId, title, button, drawer, list, form, nameInput,
+          textarea, submit, feedback, alwaysOpen, open: alwaysOpen
+        };
+        commentViews.set(songId, view);
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          submitComment(view);
+        });
+        if (button) {
+          button.addEventListener("click", () => {
+            view.open = !view.open;
+            updateCommentView(songId);
+            if (view.open) setTimeout(() => textarea.focus(), 0);
+          });
+        }
+        updateCommentView(songId);
+        return drawer;
+      };
+
+      const setupComments = () => {
+        if (!COMMENTS_API) {
+          commentsStatus.hidden = false;
+          commentsStatus.textContent = "コメント欄は準備中";
+          return;
+        }
+        generalComments.hidden = false;
+        generalCommentsArea.textContent = "";
+        generalCommentsArea.append(createCommentArea("general", "全体へのコメント", null, true));
+        loadComments();
+      };
+
+      const render = (data) => {
+        content.textContent = "";
+        let globalIndex = 0;
+        let totalSeconds = 0;
+
+        data.sections.forEach((sectionData) => {
+          const part = el("section", "part");
+          const partTitle = el("h2", "part-title", sectionData.part);
+          part.append(partTitle);
+
+          sectionData.scenes.forEach((sceneData) => {
+            const firstIndex = globalIndex;
+            const sceneTotal = sceneData.songs.reduce((sum, song) => sum + Number(song.seconds || 0), 0);
+            const scene = el("article", "scene");
+            const head = el("header", "scene-head");
+            const headingCopy = el("div");
+            if (sceneData.time) headingCopy.append(el("p", "scene-kicker", sceneData.time));
+            headingCopy.append(el("h3", "scene-name", sceneData.name));
+            headingCopy.append(el("p", "scene-meta", `${sceneData.songs.length}曲・合計 ${formatSceneTotal(sceneTotal)}`));
+            const scenePlay = el("button", "scene-play", "▶ この場面から");
+            scenePlay.type = "button";
+            scenePlay.addEventListener("click", () => startSelectedAt(firstIndex));
+            head.append(headingCopy, scenePlay);
+            if (sceneData.memo) head.append(el("p", "scene-memo", sceneData.memo));
+            scene.append(head);
+
+            const list = el("ol", "song-list");
+            sceneData.songs.forEach((songData) => {
+              const index = globalIndex++;
+              const song = { ...songData, index, part: sectionData.part, sceneName: sceneData.name };
+              songs.push(song);
+              totalSeconds += Number(song.seconds || 0);
+
+              const item = el("li", "song-item");
+              const row = el("div", "song-row");
+              row.dataset.index = String(index);
+              row.append(el("span", "song-number", String(index + 1).padStart(2, "0")));
+
+              const copy = el("div", "song-copy");
+              const titleLine = el("div", "title-line");
+              titleLine.append(el("span", "song-title", song.title));
+              titleLine.append(el("span", "song-length", formatTrackTime(song.seconds)));
+              if (song.note) titleLine.append(el("span", "badge", song.note));
+              copy.append(titleLine, el("p", "song-artist", song.artist));
+              row.append(copy);
+
+              const actions = el("div", "song-actions");
+              const play = el("button", "row-play", "▶");
+              play.type = "button";
+              play.setAttribute("aria-label", `${song.title}から試聴`);
+              play.addEventListener("click", () => {
+                if (selectedMode === "apple-preview" && mode === "apple-preview" && currentIndex === index && !audio.paused) audio.pause();
+                else if (selectedMode === "apple-preview" && mode === "apple-preview" && currentIndex === index && audio.src) audio.play().catch(() => showToast("再生を開始できませんでした"));
+                else startSelectedAt(index);
+              });
+              actions.append(play, createServiceLink("Spotify", song.spotify), createServiceLink("Apple Music", song.apple));
+              if (COMMENTS_API) {
+                actions.classList.add("has-comment-button");
+                const commentButton = el("button", "comment-button", "コメント");
+                commentButton.type = "button";
+                commentButton.setAttribute("aria-label", `${song.title}へのコメントを開く`);
+                actions.append(commentButton);
+                item.append(row);
+                row.append(actions);
+                item.append(createCommentArea(song.spotifyId, song.title, commentButton));
+              } else {
+                row.append(actions);
+                item.append(row);
+              }
+
+              row.addEventListener("click", (event) => {
+                if (event.target.closest("a, button")) return;
+                startSelectedAt(index);
+              });
+              list.append(item);
+            });
+            scene.append(list);
+            part.append(scene);
+          });
+          content.append(part);
+        });
+
+        summary.textContent = `${songs.length}曲・${formatTotal(totalSeconds)}`;
+        chorusPreviewAll.disabled = false;
+      };
+
+      const setupMediaSession = () => {
+        if (!("mediaSession" in navigator)) return;
+        const handlers = {
+          play: () => audio.play(),
+          pause: () => audio.pause(),
+          previoustrack: () => playAppleAt(Math.max(0, currentIndex - 1)),
+          nexttrack: () => playAppleAt(currentIndex + 1)
+        };
+        Object.entries(handlers).forEach(([action, handler]) => {
+          try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+        });
+      };
+
+      const loadSpotifyApi = () => {
+        window.onSpotifyIframeApiReady = (IFrameAPI) => {
+          spotifyApi = IFrameAPI;
+          if (!songs.length) return;
+          const options = {
+            width: "100%",
+            height: 152,
+            uri: `spotify:track:${songs[0].spotifyId}`
+          };
+          spotifyApi.createController(document.getElementById("spotify-embed"), options, (controller) => {
+            spotifyController = controller;
+            spotifyPreviewAll.disabled = false;
+            spotifyFullAll.disabled = false;
+            spotifyPreviewAll.textContent = "▶ 頭から試聴（各30秒）";
+            spotifyFullAll.textContent = "▶ Spotifyで1曲まるごと通して聴く";
+            controller.addListener("playback_update", (event) => {
+              if (!isSpotifyMode(mode) || !event || !event.data) return;
+              const { position = 0, duration = 0, isPaused = true } = event.data;
+
+              // loadUri直後のplayはSpotify側のリスト準備前に失敗する。
+              // 新しい曲が先頭位置で読み込まれた最初の通知を待ってから再生する。
+              if (spotifyPendingPlay) {
+                const loadedAtStart = isPaused && duration > 0 && position <= 750;
+                if (loadedAtStart) {
+                  const pendingIndex = spotifyPendingPlay.index;
+                  spotifyPendingPlay = null;
+                  spotifyAdvancing = false;
+                  spotifyCurrent.textContent = `${pendingIndex + 1}. ${songs[pendingIndex].title}`;
+                  try {
+                    const playResult = spotifyController.play();
+                    if (playResult && typeof playResult.catch === "function") {
+                      playResult.catch(() => showToast("Spotifyで再生を開始できませんでした"));
+                    }
+                  } catch (_) {
+                    showToast("Spotifyで再生を開始できませんでした");
+                  }
+                }
+                return;
+              }
+
+              const isThirtySecondMode = mode === "spotify-preview";
+              const resetBefore = isThirtySecondMode ? 28500 : duration - 1500;
+              if (duration > 0 && position < resetBefore) spotifyEndLatched = false;
+              const atEnd = isThirtySecondMode
+                ? position >= 29900
+                : duration > 0 && position >= duration - 300;
+              const pausedNearEnd = isThirtySecondMode
+                ? isPaused && position >= Math.min(28500, Math.max(0, duration - 1200))
+                : isPaused && duration > 0 && position >= duration - 1200;
+              if ((atEnd || pausedNearEnd) && !spotifyEndLatched) {
+                spotifyEndLatched = true;
+                if (isThirtySecondMode) {
+                  try { spotifyController.pause(); } catch (_) {}
+                }
+                advanceSpotify();
+              }
+            });
+          });
+        };
+        const script = document.createElement("script");
+        script.src = "https://open.spotify.com/embed/iframe-api/v1";
+        script.async = true;
+        script.onerror = () => {
+          spotifyPreviewAll.textContent = "Spotifyプレーヤーを読み込めません";
+          spotifyFullAll.textContent = "Spotifyプレーヤーを読み込めません";
+          spotifyPreviewAll.disabled = true;
+          spotifyFullAll.disabled = true;
+        };
+        document.head.append(script);
+      };
+
+      chorusPreviewAll.addEventListener("click", () => {
+        setSelectedMode("apple-preview");
+        playAppleAt(0);
+      });
+      spotifyPreviewAll.addEventListener("click", () => {
+        setSelectedMode("spotify-preview");
+        startSpotifyAt(0, "spotify-preview");
+      });
+      spotifyFullAll.addEventListener("click", () => {
+        setSelectedMode("spotify-full");
+        startSpotifyAt(0, "spotify-full");
+      });
+      previousButton.addEventListener("click", () => playAppleAt(currentIndex - 1));
+      nextButton.addEventListener("click", () => playAppleAt(currentIndex + 1));
+      playPauseButton.addEventListener("click", () => {
+        if (audio.paused) audio.play().catch(() => showToast("再生を開始できませんでした"));
+        else audio.pause();
+      });
+
+      audio.addEventListener("ended", () => {
+        if (mode === "apple-preview") playAppleAt(currentIndex + 1, false);
+      });
+      audio.addEventListener("error", skipBrokenPreview);
+      audio.addEventListener("timeupdate", () => {
+        if (mode === "apple-preview") updateApplePlayer();
+      });
+      audio.addEventListener("loadedmetadata", () => {
+        if (mode === "apple-preview") updateApplePlayer();
+      });
+      audio.addEventListener("play", () => {
+        if (mode === "apple-preview") { updateApplePlayer(); updateRows(currentIndex); }
+      });
+      audio.addEventListener("pause", () => {
+        if (mode === "apple-preview") { updateApplePlayer(); updateRows(currentIndex); }
+      });
+
+      fetch("./kouho.json")
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          if (!data.sections || !Array.isArray(data.sections)) throw new Error("Invalid data");
+          render(data);
+          setupPlaylistLinks();
+          setupComments();
+          setupMediaSession();
+          loadSpotifyApi();
+        })
+        .catch(() => {
+          summary.textContent = "曲目を読み込めませんでした";
+          content.innerHTML = '<p class="fatal-error">曲目データの読み込みに失敗しました。ページを再読み込みしてください。</p>';
+        });
+    })();
+  </script>
+</body>
+</html>
