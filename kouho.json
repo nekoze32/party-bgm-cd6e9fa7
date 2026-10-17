@@ -1,0 +1,150 @@
+{
+ "sections": [
+  {
+   "part": "人前式（決まった流れ）",
+   "scenes": [
+    {
+     "name": "綴の入場",
+     "time": null,
+     "memo": "この曲のあとに、下の候補のどれかを流す",
+     "songs": [
+      {
+       "title": "もうけもん",
+       "artist": "MONO NO AWARE",
+       "seconds": 118,
+       "apple": "https://music.apple.com/jp/album/%E3%82%82%E3%81%86%E3%81%91%E3%82%82%E3%82%93/1737355797?i=1737355799",
+       "spotify": "https://open.spotify.com/track/2hMn9FYHmZtIFikDDHnoTn",
+       "spotifyId": "2hMn9FYHmZtIFikDDHnoTn",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4e/34/50/4e34508b-fd99-0db4-be70-8bf3a49ea772/mzaf_14643159236643442760.plus.aac.p.m4a",
+       "note": "シナぷしゅ"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "part": "指輪交換〜署名の候補",
+   "scenes": [
+    {
+     "name": "A案",
+     "time": null,
+     "memo": "ピアノ独奏。いちばんしっとり",
+     "songs": [
+      {
+       "title": "aqua",
+       "artist": "坂本龍一",
+       "seconds": 269,
+       "apple": "https://music.apple.com/jp/album/aqua/1224287119?i=1224287136",
+       "spotify": "https://open.spotify.com/track/5isknJIaYSJZPCArnpFAT8",
+       "spotifyId": "5isknJIaYSJZPCArnpFAT8",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e3/07/a3/e307a3f9-96f4-f387-222a-460c87ecfb15/mzaf_2037691425463281015.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "B案",
+     "time": null,
+     "memo": "ギターのジャズ。1953年の録音",
+     "songs": [
+      {
+       "title": "Nuages",
+       "artist": "Django Reinhardt",
+       "seconds": 198,
+       "apple": "https://music.apple.com/jp/album/nuages-version-1953/1020407441?i=1020408472",
+       "spotify": "https://open.spotify.com/track/3kySweWQJ09SVidcTVmPtQ",
+       "spotifyId": "3kySweWQJ09SVidcTVmPtQ",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e6/67/d2/e667d21b-8ad9-5a4f-b37d-6ee8610f9c42/mzaf_16081883489435957357.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "C案",
+     "time": null,
+     "memo": "インスト。ゆったりしたグルーヴ",
+     "songs": [
+      {
+       "title": "Breezin'",
+       "artist": "George Benson",
+       "seconds": 341,
+       "apple": "https://music.apple.com/jp/album/breezin/1018562855?i=1018562857",
+       "spotify": "https://open.spotify.com/track/1trZ66plu3Sq9dz8VbMDRj",
+       "spotifyId": "1trZ66plu3Sq9dz8VbMDRj",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/37/91/2937911d-4fa0-8a69-faa6-be044bc4114e/mzaf_6719811009975984227.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "D案",
+     "time": null,
+     "memo": "家族の歌。歌詞は未確認",
+     "songs": [
+      {
+       "title": "fam fam",
+       "artist": "never young beach",
+       "seconds": 178,
+       "apple": "https://music.apple.com/jp/album/fam-fam/1115134179?i=1115134560",
+       "spotify": "https://open.spotify.com/track/7LYe5wjQ7VAZDIYyKUUeGn",
+       "spotifyId": "7LYe5wjQ7VAZDIYyKUUeGn",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/9f/db/2f9fdb4f-c05e-3a1a-0a59-abb34d4fe4a8/mzaf_6247409757327170029.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "E案",
+     "time": null,
+     "memo": "家族の歌。歌詞は未確認",
+     "songs": [
+      {
+       "title": "Family Song",
+       "artist": "星野源",
+       "seconds": 324,
+       "apple": "https://music.apple.com/jp/album/family-song/1264565974?i=1264566029",
+       "spotify": "https://open.spotify.com/track/6XzDz5r1bGMkcOKeXQwTqM",
+       "spotifyId": "6XzDz5r1bGMkcOKeXQwTqM",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b9/35/a9/b935a92f-8da2-3362-506d-e88e4084eedf/mzaf_17412302414504872688.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "F案",
+     "time": null,
+     "memo": "歌詞は未確認",
+     "songs": [
+      {
+       "title": "This is the love with 浜田真理子",
+       "artist": "大橋トリオ",
+       "seconds": 346,
+       "apple": "https://music.apple.com/jp/album/this-is-the-love-with-%E6%B5%9C%E7%94%B0%E7%9C%9F%E7%90%86%E5%AD%90/554554045?i=554554144",
+       "spotify": "https://open.spotify.com/track/4BfvX8M6OxDKqSMxp0NXG6",
+       "spotifyId": "4BfvX8M6OxDKqSMxp0NXG6",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/73/6b/23/736b23ce-a96f-0d7b-24e7-3aaf643c9efc/mzaf_10607430315434149412.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "G案",
+     "time": null,
+     "memo": "しっとり寄り。歌詞は未確認",
+     "songs": [
+      {
+       "title": "くだらないの中に",
+       "artist": "星野源",
+       "seconds": 260,
+       "apple": "https://music.apple.com/jp/album/%E3%81%8F%E3%81%A0%E3%82%89%E3%81%AA%E3%81%84%E3%81%AE%E4%B8%AD%E3%81%AB/1003282140?i=1003282460",
+       "spotify": "https://open.spotify.com/track/1HD7YyTYAQ4LPussdtj7Ui",
+       "spotifyId": "1HD7YyTYAQ4LPussdtj7Ui",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ef/ac/fe/efacfe3d-104a-f0a9-523c-0d366b219083/mzaf_12946249197607838095.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
