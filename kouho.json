@@ -145,6 +145,113 @@
      ]
     }
    ]
+  },
+  {
+   "part": "パーティ入場の候補",
+   "scenes": [
+    {
+     "name": "H案",
+     "time": null,
+     "memo": "Pop Virusと同じ星野源で、いちばん明るい曲",
+     "songs": [
+      {
+       "title": "SUN",
+       "artist": "星野源",
+       "seconds": 241,
+       "apple": "https://music.apple.com/jp/album/sun/1062215238?i=1062215242",
+       "spotify": "https://open.spotify.com/track/1DOZa2VoazIiDjGYlUQTlW",
+       "spotifyId": "1DOZa2VoazIiDjGYlUQTlW",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/5b/9a/b7/5b9ab7b3-44cb-6a8e-363a-a79d97afea75/mzaf_4685406422230471411.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "I案",
+     "time": null,
+     "memo": "よく聴いている曲。ゆるく明るい",
+     "songs": [
+      {
+       "title": "明るい未来",
+       "artist": "never young beach",
+       "seconds": 234,
+       "apple": "https://music.apple.com/jp/album/%E6%98%8E%E3%82%8B%E3%81%84%E6%9C%AA%E6%9D%A5/1115134179?i=1115134632",
+       "spotify": "https://open.spotify.com/track/5Gbgx64AeuCcXIFys7ymqK",
+       "spotifyId": "5Gbgx64AeuCcXIFys7ymqK",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6c/24/35/6c243529-0211-bd05-f1ec-91ef65f348ef/mzaf_13489644600362762868.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "J案",
+     "time": null,
+     "memo": "ホーンのイントロで入場が分かりやすい",
+     "songs": [
+      {
+       "title": "Sir Duke",
+       "artist": "Stevie Wonder",
+       "seconds": 234,
+       "apple": "https://music.apple.com/jp/album/sir-duke/1440788438?i=1440788542",
+       "spotify": "https://open.spotify.com/track/4pNiE4LCVV74vfIBaUHm1b",
+       "spotifyId": "4pNiE4LCVV74vfIBaUHm1b",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/f1/cc/19f1ccc5-f10c-8b88-ddfa-b97acf5009b2/mzaf_16382814554090706144.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "K案",
+     "time": null,
+     "memo": "70sソウルの定番。シングル版",
+     "songs": [
+      {
+       "title": "Got to Be Real",
+       "artist": "Cheryl Lynn",
+       "seconds": 229,
+       "apple": "https://music.apple.com/jp/album/got-to-be-real-single-version/387332893?i=387332941",
+       "spotify": "https://open.spotify.com/track/26FOglnpqOEWUyspcbNYq6",
+       "spotifyId": "26FOglnpqOEWUyspcbNYq6",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/17/b9/45/17b94557-cbaa-26df-2e66-3714b723394a/mzaf_17661250387556289311.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "L案",
+     "time": null,
+     "memo": "落ち着いたディスコ",
+     "songs": [
+      {
+       "title": "Give Me the Night",
+       "artist": "George Benson",
+       "seconds": 301,
+       "apple": "https://music.apple.com/jp/album/give-me-the-night/309576571?i=309576575",
+       "spotify": "https://open.spotify.com/track/5gaUkg5JNk8c4mr2jnpX8H",
+       "spotifyId": "5gaUkg5JNk8c4mr2jnpX8H",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/35/54/ab/3554ab34-cf55-6b9f-5a86-dde12c2bf753/mzaf_8529875484408625468.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    },
+    {
+     "name": "M案",
+     "time": null,
+     "memo": "2003年の短い版（約4分）",
+     "songs": [
+      {
+       "title": "Don't Stop 'Til You Get Enough",
+       "artist": "Michael Jackson",
+       "seconds": 237,
+       "apple": "https://music.apple.com/jp/album/dont-stop-til-you-get-enough-2003-edit/273598907?i=273598912",
+       "spotify": "https://open.spotify.com/track/1HRtVWNhS9tEvDQyOKD9Fs",
+       "spotifyId": "1HRtVWNhS9tEvDQyOKD9Fs",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bc/19/31/bc1931ec-1127-7df6-5db7-e0db0ee48e44/mzaf_14453549984806836570.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
+    }
+   ]
   }
  ]
 }
