@@ -74,8 +74,19 @@
     {
      "name": "指輪交換〜署名",
      "time": null,
-     "memo": "曲は選んでいるところ。尺が足りなければ The Journey に戻す",
-     "songs": []
+     "memo": "尺が足りなければ The Journey に戻す",
+     "songs": [
+      {
+       "title": "Breezin'",
+       "artist": "George Benson",
+       "seconds": 341,
+       "apple": "https://music.apple.com/jp/album/breezin/1018562855?i=1018562857",
+       "spotify": "https://open.spotify.com/track/1trZ66plu3Sq9dz8VbMDRj",
+       "spotifyId": "1trZ66plu3Sq9dz8VbMDRj",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/37/91/2937911d-4fa0-8a69-faa6-be044bc4114e/mzaf_6719811009975984227.plus.aac.p.m4a",
+       "note": null
+      }
+     ]
     },
     {
      "name": "3人で退場（フラワーシャワー）",
@@ -169,8 +180,18 @@
     {
      "name": "入場",
      "time": "13:30",
-     "memo": "生演奏（音源は参考）",
+     "memo": "Sir Duke の音源で入場し、そのあと Pop Virus を生演奏（Pop Virus の音源は参考）",
      "songs": [
+      {
+       "title": "Sir Duke",
+       "artist": "Stevie Wonder",
+       "seconds": 234,
+       "apple": "https://music.apple.com/jp/album/sir-duke/1440788438?i=1440788542",
+       "spotify": "https://open.spotify.com/track/4pNiE4LCVV74vfIBaUHm1b",
+       "spotifyId": "4pNiE4LCVV74vfIBaUHm1b",
+       "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/f1/cc/19f1ccc5-f10c-8b88-ddfa-b97acf5009b2/mzaf_16382814554090706144.plus.aac.p.m4a",
+       "note": null
+      },
       {
        "title": "Pop Virus",
        "artist": "星野源",
